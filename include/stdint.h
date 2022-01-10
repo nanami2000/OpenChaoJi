@@ -27,7 +27,7 @@
  
 #define u32 unsigned int 
 #define u16 unsigned short 
-#define s32 int 
+#define s32 int
 #define s16 short int 
 #define u8  unsigned char 
 #define s8  char
