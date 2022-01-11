@@ -1,0 +1,45 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "E:/Opencj/include",
+                "E:/Opencj/src",
+                "C:/Users/nanam/.platformio/packages/framework-cmsis@2.50501.200527/CMSIS/Include",
+                "C:/Users/nanam/.platformio/packages/framework-cmsis-stm32f4/Include",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "E:/Opencj/include",
+                    "E:/Opencj/src",
+                    "C:/Users/nanam/.platformio/packages/framework-cmsis@2.50501.200527/CMSIS/Include",
+                    "C:/Users/nanam/.platformio/packages/framework-cmsis-stm32f4/Include",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50204",
+                "STM32F407xx",
+                "STM32F4",
+                "STM32F40_41xxx",
+                "F_CPU=168000000L",
+                "__PLATFORMIO_BUILD_DEBUG__",
+                ""
+            ],
+            "compilerPath": "C:/Users/nanam/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin/arm-none-eabi-gcc.exe",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=cortex-m4",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
