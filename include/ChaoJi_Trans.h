@@ -24,98 +24,105 @@
  *
  *
  */
+#ifndef CHAOJI_TRANS_H
+#define CHAOJI_TRANS_H
 
-/*Error Code defination*/
+#include <stdint.h>
+
+// Error Code defintions.
 typedef short err_Cj;
-#define ERR_OK (0)
-#define ERR_ERR (-1)
+#define ERR_OK		(0)
+#define ERR_ERR		(-1)
 
-/*Message type defination*/
-#define LM_TYPE (1)
-#define RSM_TYPE (0)
+// Message type defintions.
+#define LM_TYPE		(1)
+#define RSM_TYPE	(0)
 
-/*ChaoJi communication states defination*/
+// ChaoJi communication states defintions.
+// Connect(s0) data transfer(s1) wait ack(s2) wait end(s3) connection close(s4).
 enum Cj_Com_state{
-	RSM_S0=0,
+	RSM_S0	= 0,
 	RSM_S1,
 	RSM_S2,
-	LM_S0=10,
+	LM_S0	= 10,
 	LM_S1,
 	LM_S2,
-	URSM_S0=100,
+	URSM_S0	= 100,
 	URSM_S1,
-	URSM_S2	
+	URSM_S2
 };
 
-/* Data structure of reliable Message*/  
+// Data structure of reliable Message.
 struct ChaoJi_RM_Mcb
 {
 	enum Cj_Com_state cj_rm_com_state;
-	u8 MsgType; //0: RSM_TYPE, 1: LM_TYPE
-	u8 port;
-	u8 pgi;
-	u8 len;
-	u8 *recv_buf;
-	u16 tfs;			//total fram size: ACK's total frame size 
-	u16 crt_seq;		//current sequence no: ACK's start sequence number included
-	u16 rst_seq;		//request seq no 
-	u8 *recved_flag;	//received flag: include all ACK, NACK and ANDACK, number of pending data frames and its initial sequence number
-	u8 pause_flag;	//transfer pause 
-	u8 trans_fin_flag;//transfer finish flag 
-	err_Cj (* recv)(struct ChaoJi_RM_Mcb *rm_Mcb);// call back function to notify appliacation layer recv have been made
-	u8* snd_buf;	//send the data buffer. 
-    u32	snd_len;	//send the byte size of data	
-    u32 snd_state;	//send states
-	u32 snd_currSN; //send the current serial number	
-	u32 snd_time_out; //send the timeout
-	u32 snd_max_timer; //send the maxium timer round	
-	err_Cj (* sent)(struct ChaoJi_RM_Mcb *rm_Mcb) // call back func to notify application layer
+	uint8_t	MsgType; 		// 0: RSM_TYPE, 1: LM_TYPE.
+	uint8_t port;
+	uint8_t pgi;
+	uint8_t len;
+	uint8_t *recv_buf;
+	uint16_t tfs;			// Total fram size: ACK's total frame size.
+	uint16_t crt_seq;		// Current sequence no: ACK's start sequence number included.
+	uint16_t rst_seq;		// Request seq no.
+	uint8_t *recved_flag;	// Received flag: include all ACK, NACK and ANDACK, number of pending data frames and its initial sequence number.
+	uint8_t pause_flag;		// Transfer pause.
+	uint8_t trans_fin_flag;	// Transfer finish flag.
+	err_Cj (* recv)(struct ChaoJi_RM_Mcb *rm_Mcb); // Call back function to notify appliacation layer recv have been made.
+	uint8_t* snd_buf;		// Send the data buffer..
+    uint32_t snd_len;		// Send the byte size of data.
+    uint32_t snd_state;		// Send states.
+	uint32_t snd_currSN; 	// Send the current serial number.
+	uint32_t snd_time_out; 	// Send the timeout.
+	uint32_t snd_max_timer; // Send the maxium timer round.
+	err_Cj (* sent)(struct ChaoJi_RM_Mcb *rm_Mcb); // Call back func to notify application layer.
 };
 
-/* Data structure of unreliable Message*/  
+// Data structure of unreliable Message
 struct ChaoJi_Urm_Mcb
 {
-	enum Cj_Com_state cj_urm_com_state;//connect(s0) data transfer(s1) wait ack(s2) wait end(s3) connection close(s4)
-	u8 port;
-	u8 pgi;
-	u8 len;
-	u8 *recv_buf;
-	u16 tfs;			//total fram size 
-	u16 crt_seq;		//current sequence no 
-	u16 rst_seq;		//request seq no 
-	u8 *recved_flag;	//received flag
-	u8 pause_flag;	//transfer pause flag
-	u8 trans_fin_flag;//transter finish flag 
-	err_Cj (* recv)(struct ChaoJi_URM_Mcb *urm_Mcb);// call back function to notify application layer recv have been made
-	u8* snd_buf;	//send procedure data buffer	
-	u32	snd_len;	//send the byte size of data	
-	u32 snd_state;	//Send the status	
-	u32 snd_currSN; //send the current serial number
-	u32 snd_time_out; //send the timeout
-	u32 snd_max_timer; //send the maxium timer round	
-	err_Cj (* sent)(struct ChaoJi_URM_Mcb *urm_Mcb) // call back func to notify application layer
+	enum Cj_Com_state cj_urm_com_state;
+	uint8_t port;
+	uint8_t pgi;
+	uint8_t len;
+	uint8_t *recv_buf;
+	uint16_t tfs;			// Total fram size.
+	uint16_t crt_seq;		// Current sequence no.
+	uint16_t rst_seq;		// Request seq no.
+	uint8_t *recved_flag;	// Received flag.
+	uint8_t pause_flag;		// Transfer pause flag.
+	uint8_t trans_fin_flag;	// Transter finish flag.
+	err_Cj (* recv)(struct ChaoJi_URM_Mcb *urm_Mcb); // Call back function to notify application layer recv have been made.
+	uint8_t* snd_buf;		// Send procedure data buffer.
+	uint32_t snd_len;		// Send the byte size of data.
+	uint32_t snd_state;		// Send the status.
+	uint32_t snd_currSN;	// Send the current serial number.
+	uint32_t snd_time_out; 	// Send the timeout.
+	uint32_t snd_max_timer; // Send the maxium timer round.
+	err_Cj (* sent)(struct ChaoJi_URM_Mcb *urm_Mcb); // Call back func to notify application layer.
 };
 
-//CAN ID
+// CAN ID
 typedef union
 {
-	u32 u32Word;
+	uint32_t uint32_tWord;
 	struct
 	{
-		u32 sa	 :8;//source address
-		u32 ps	 :8;//Destination address
-		u32 pf	 :8;//PDU type
-		u32 dp	 :1;//Data Page
-		u32 edp  :1;//expension data page
-		u32 p 	 :3;//Priority
-		u32 rev    :3;//Reserv
-	}Bits;
-}CanId_t;
+		uint32_t sa		:8; // Source address.
+		uint32_t ps		:8; // Destination address.
+		uint32_t pf		:8; // PDU type.
+		uint32_t dp		:1; // Data Page.
+		uint32_t edp	:1; // Extended data page.
+		uint32_t p		:3; // Priority.
+		uint32_t rsvd	:3; // Reserved.
+	} bit;
+} CanId_t;
 
-//CAN PDU defination
+// CAN PDU defination.
 struct Can_Pdu
 {
-	CanId_t    can_id;
-    u8_t       can_dlc;
-    u8_t       data[8];
+	CanId_t	can_id;
+    uint8_t	can_dlc;
+    uint8_t	data[8];
 };
+
+#endif // CHAOJI_TRANS_H.
