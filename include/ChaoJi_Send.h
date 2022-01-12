@@ -30,34 +30,70 @@
 #include <stdint.h>
 #include "ChaoJi_Trans.h"
 
-/*after Reliable Message send all procedure is done call back to notify application layer*/
+/**
+* @brief   After Reliable Message send all procedure is done call back to notify
+*          application layer.
+* @param   Msgcb Pointer to a ChaoJi_RM_Mcb struct.
+* @retval  None.
+*/
 void ChaoJi_RM_Send_Notify(struct ChaoJi_RM_Mcb *Msgcb);
 
-/*after unreliable Reliable Message send all procedure is done call back to notify application layer*/
+/**
+* @brief   After unreliable Reliable Message send all procedure is done call back 
+*          to notify application layer.
+* @param   Msgcb Pointer to a ChaoJi_URM_Mcb struct body.
+* @retval  None.
+*/
 void ChaoJi_URM_Send_Notify(struct ChaoJi_URM_Mcb *Msgcb);
 
-/*reliable message send, Deal with application data buffer and request Msgcb according to data buffer length then call ChaoJi_RM_SendProcess*/
-err_Cj ChaoJi_RM_write(struct ChaoJi_RM_Mcb *Msgcb, uint8_t* data, uint32_t length, err_Cj *err);
+/**
+* @brief   Reliable message send, Deal with application data buffer and request Msgcb 
+*          according to data buffer length then call ChaoJi_RM_SendProcess.
+* @param   Msgcb Pointer to a ChaoJi_RM_Mcb struct,for the reliable message to send data.
+* @param   data Pointer to the data to be sending.
+* @param   length data length in bytes.
+* @param   err Pointer to a error,unused.
+* @retval  ERR_OK If the transmit data is written to the buffer.
+*/
+err_Cj ChaoJi_RM_write(struct ChaoJi_RM_Mcb *Msgcb, u8_t* data, u32_t length, err_Cj *err);
 
-/*unreliable message send, Deal with application data buffer and request Msgcb according to data buffer then call ChaoJi_Output*/
+/**
+* @brief   unreliable message send, Deal with application data buffer and Convert the application 
+*		   data format to Can_Pdu frame ,then call ChaoJi_Output.
+* @param   Msgcb Pointer to a ChaoJi_URM_Mcb struct,for the unreliable message to send data.
+* @param   data Pointer to the data to be sending.
+* @param   length Pointer to data length in bytes.
+* @param   pdu Pointer to the can link protocol data unit frame.
+* @retval  ERR_OK If the transmit data is written to the buffer.
+*/
 err_Cj ChaoJi_URSM_write(struct ChaoJi_Urm_Mcb *Msgcb, uint8_t* data, uint32_t length, struct Can_Pdu *pdu);
 
-/* relaible message send state machine, connection established, sending data, pause, ending states transient, after execute finished call back
- ChaoJi_RM_Send_Notify to notify application layer;
- Periodic call ChaoJi_RM_TxProcess(lm_Msgcb)、ChaoJi_RM_TxProcess(rsm_Msgcb)
- call back by RSM ACK, LM ACK, NACK to update the Cj_state*/
+/**
+* @brief   Relaible message send state machine, connection established, sending data, pause, 
+*		   ending states transient, after execute finished call back ChaoJi_RM_Send_Notify to notify application layer.
+*		   the system periodic call ChaoJi_RM_TxProcess(lm_Msgcb)、ChaoJi_RM_TxProcess(rsm_Msgcb).
+*		   and call back by RSM ACK, LM ACK, NACK to update the Cj_state
+* @param   Msgcb Pointer to a ChaoJi_RM_Mcb struct,for the reliable message to send data.
+* @param   data Pointer to the data to be sending.
+* @param   length Pointer to data length in bytes.
+* @param   pdu Pointer to the output can link protocol data unit,the pdu will be sent.
+* @retval  reliable message send state,define in Cj_Com_state
+*/
 Cj_state ChaoJi_RM_SendProcess(struct ChaoJi_RM_Mcb *Msgcb, struct Can_Pdu *pdu);
 
-/*Deal with data link layer to make real traffic by using CAN PDU
-usage:
-After ChaoJi_URSM_write, ChaoJi_RM_TxProcess
-or
-rferenced by receiv procedure*/
+/**
+* @brief   Deal with data link layer to make real traffic by using CAN PDU，
+*			usage：After ChaoJi_URSM_write, ChaoJi_RM_TxProcess or rferenced by receiv procedure
+* @param   pdu Pointer to the output can link protocol data unit,the pdu will be sent.
+* @retval  ERR_OK If the data has been sent ,else ERR_ERR.
+*/
 err_Cj ChaoJi_Output(struct Can_Pdu *pdu);
 
-
-/*Polling method to get the sending procedure status for application layer
-  return Cj_state*/
+  /**
+* @brief   Polling method to get the sending procedure status for application layer.
+* @param   Msgcb Pointer to a ChaoJi_RM_Mcb struct body.
+* @retval  reliable message send state,define in Cj_Com_state
+*/
 Cj_state ChaoJi_RM_GetSendState(struct ChaoJi_RM_Mcb *Msgcb);
 
 
@@ -76,12 +112,12 @@ void example(void)
 	// Send
 	uint8_t data1[] = {1, 2, 3, 4, 5,6,7,8,9};
 	ChaoJi_RM_write(lm_Mcb, data1, sizeof(data1), &errVal);
-	ChaoJi_RM_TxProcess(lm_Mcb, pdu);
+	ChaoJi_RM_SendProcess(lm_Mcb, pdu);
 	ChaoJi_Output(pdu);
 
 	uint8_t data2[] = {1, 2, 3, 4, 5};
 	ChaoJi_RM_write(rsm_Mcb, data2, sizeof(data2), &errVal);
-	ChaoJi_RM_TxProcess(rsm_Mcb, pdu);
+	ChaoJi_RM_SendProcess(rsm_Mcb, pdu);
 	ChaoJi_Output(pdu);
 
 	uint8_t data3[] = {1, 2, 3, 4, 5,6,7};
