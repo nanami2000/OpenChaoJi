@@ -30,6 +30,7 @@
 #include "ChaoJi_Trans.h"
 
 /*After RM data has been received, Application layer will trigger ChaoJi_RM_Notify to notify the transfer layer to release the memory.*/
+//
 void ChaoJi_RM_Recv_Notify(struct ChaoJi_RM_Mcb *Msgcb);
 
 /*After URM data has been received, Application layer will trigger ChaoJi_RM_Notify to notify the transfer layer to release the memory.*/
