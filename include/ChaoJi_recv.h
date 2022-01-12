@@ -80,7 +80,7 @@ err_Cj ChaoJi_RSM_Recv(struct ChaoJi_RM_Mcb *Msgcb);
 
 /**
  * @brief   Trigger the callback function to handle Unreliable Short Message
- *          layer to release the memory..
+ *          layer to release the memory.
  * @param   Pointer to a ChaoJi_URM_Mcb struct.
  * @retval  None.
  */
@@ -98,7 +98,7 @@ err_Cj ChaoJi_LM_Recv(struct ChaoJi_RM_Mcb *Msgcb);
 
 
 /**
- * @brief   Handle all kinds of ACK NACK message,eg RSM_ACK, LM_ACK, NACK. Set flags to the sent data and put them into the data structure
+ * @brief   Handle all kinds of ACK NACK message,eg RSM_ACK, LM_ACK, NACK. Set flags to the sent data and put them into the data structure.
  * @param   Pointer to a ChaoJi_RM_Mcb struct.
  * @retval  None.
  */
